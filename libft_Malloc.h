@@ -25,14 +25,15 @@ typedef struct s_zone_link
 }t_zone_link;
 
 typedef struct s_zones{
+	int     init;
 	t_block tiny[TINY_BLOCKS];
 	void    *tiny_space;
 	t_block small[SMALL_BLOCKS];
 	void    *small_space;
-
+	t_zone_link *large;
 } t_zones;
 
-t_zone_link *g_allocated_zones;
+extern t_zones g_zones;
 
 void free(void *ptr);
 

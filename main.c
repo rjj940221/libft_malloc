@@ -4,7 +4,9 @@
 
 #include <printf.h>
 #include <unistd.h>
+#include "libft_Malloc.h"
 
 int main(){
-	printf("%d", getpagesize());
+
+	malloc(20);
 }
