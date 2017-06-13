@@ -12,7 +12,6 @@
 
 typedef struct s_block{
 	size_t  size;
-	size_t  max_size;
 	int     free;
 	void    *location;
 } t_block;
@@ -21,7 +20,8 @@ typedef struct s_zone_link
 {
 	size_t size;
 	void *location;
-	struct s_zone_link* next;
+	struct s_zone_link *next;
+	struct s_zone_link *previous;
 }t_zone_link;
 
 typedef struct s_zones{
@@ -43,5 +43,8 @@ void *realloc(void *ptr, size_t size);
 
 void show_alloc_mem();
 
+t_zone_link *find_zone(void *adr);
+
+void init();
 
 #endif

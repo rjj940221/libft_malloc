@@ -2,11 +2,11 @@
 // Created by Robert JONES on 2017/06/12.
 //
 
-#include <printf.h>
-#include <unistd.h>
 #include "libft_Malloc.h"
 
-int main(){
-
-	malloc(20);
+int main()
+{
+	void *ptr = "asdf";
+	show_alloc_mem();
+	realloc(ptr,20);
 }
