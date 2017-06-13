@@ -1,11 +1,23 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   libft_malloc_suport.c                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rojones <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/06/13 14:33:19 by rojones           #+#    #+#             */
+/*   Updated: 2017/06/13 14:34:35 by rojones          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-#include "libft_Malloc.h"
+
+#include "libft_malloc.h"
 
 t_zones g_zones;
 
-t_zone_link *find_zone(void *adr)
+t_zone_link	*find_zone(void *adr)
 {
-	t_zone_link *iter;
+	t_zone_link	*iter;
 
 	iter = g_zones.large;
 	while (iter != NULL) {
@@ -15,9 +27,9 @@ t_zone_link *find_zone(void *adr)
 	return NULL;
 }
 
-size_t print_zone(t_block *zone, int num_blocks){
-	int i;
-	size_t bytes;
+size_t		print_zone(t_block *zone, int num_blocks){
+	int		i;
+	size_t	bytes;
 
 	bytes = 0;
 	i = -1;
@@ -30,9 +42,9 @@ size_t print_zone(t_block *zone, int num_blocks){
 	return bytes;
 }
 
-size_t print_large_zone(){
-	size_t bytes;
-	t_zone_link *tmp;
+size_t		print_large_zone(){
+	size_t		bytes;
+	t_zone_link	*tmp;
 
 	tmp = g_zones.large;
 	bytes = 0;
@@ -44,8 +56,8 @@ size_t print_large_zone(){
 	return  bytes;
 }
 
-void show_alloc_mem(){
-	size_t total_bytes;
+void		show_alloc_mem(){
+	size_t	total_bytes;
 
 	if (g_zones.init == 0)
 		init();
@@ -54,8 +66,7 @@ void show_alloc_mem(){
 	total_bytes += print_zone(g_zones.tiny, TINY_BLOCKS);
 	ft_printf("SMALL : %p\n", g_zones.small_space);
 	total_bytes += print_zone(g_zones.small, SMALL_BLOCKS);
-	//if (g_zones.large)
-		ft_printf("LARGE : %p\n", (g_zones.small_space + (SMALL_BLOCKS * SMALL_SIZE)));
+	ft_printf("LARGE : %p\n", (g_zones.small_space + (SMALL_BLOCKS * SMALL_SIZE)));
 	total_bytes += print_large_zone();
 	ft_printf("Total : %lu bytes", total_bytes);
 
