@@ -6,7 +6,7 @@
 /*   By: rojones <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/13 14:31:13 by rojones           #+#    #+#             */
-/*   Updated: 2017/06/14 07:22:14 by rojones          ###   ########.fr       */
+/*   Updated: 2017/06/14 11:36:35 by rojones          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,4 +61,7 @@ t_zone_link		*find_zone(void *adr);
 
 void			init();
 
+void			print_address(void *ptr);
+
+void			destructer(void);
 #endif

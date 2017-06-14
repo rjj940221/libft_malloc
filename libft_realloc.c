@@ -6,7 +6,7 @@
 /*   By: rojones <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/13 14:34:44 by rojones           #+#    #+#             */
-/*   Updated: 2017/06/14 07:26:09 by rojones          ###   ########.fr       */
+/*   Updated: 2017/06/14 09:16:53 by rojones          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,14 @@ void	realloc_error(void *ptr)
 	id = getpgrp();
 	thread = pthread_self();
 	pthread_getname_np(thread, name, 15);
-	ft_printf("%s(%i,%p) libft_malloc: *** error for object %p: \
-pointer being realloc'd was not allocated\n", name, id,
-			thread, ptr);
+	ft_putstr(name);
+	ft_putchar('(');
+	ft_putnbr(id);
+	ft_putchar(',');
+	print_address(thread);
+	ft_putstr(") libft_malloc: *** error for object ");
+	print_address(ptr);
+	ft_putstr(": pointer being realloc'd was not allocated\n");
 	munmap(g_zones.tiny_space, (size_t)(TINY_BLOCKS * TINY_SIZE));
 	munmap(g_zones.small_space, (size_t)(SMALL_BLOCKS * SMALL_SIZE));
 	pthread_kill(thread, 6);

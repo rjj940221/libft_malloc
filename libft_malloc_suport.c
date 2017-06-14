@@ -6,7 +6,7 @@
 /*   By: rojones <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/13 14:33:19 by rojones           #+#    #+#             */
-/*   Updated: 2017/06/14 07:25:09 by rojones          ###   ########.fr       */
+/*   Updated: 2017/06/14 09:28:31 by rojones          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,29 @@ t_zone_link	*find_zone(void *adr)
 	return (NULL);
 }
 
+void		print_address(void *ptr)
+{
+	static char		*rep;
+	static char		buffer[50];
+	char			*iter;
+	unsigned long	num;
+
+	num = (unsigned long)ptr;
+	iter = &buffer[49];
+	rep = "0123456789abcdef";
+	*iter = '\0';
+	if (num == 0)
+		*--iter = '0';
+	while (num != 0)
+	{
+		*--iter = rep[num % 16];
+		num /= 16;
+	}
+	*--iter = 'x';
+	*--iter = '0';
+	ft_putstr(iter);
+}
+
 size_t		print_zone(t_block *zone, int num_blocks)
 {
 	int		i;
@@ -38,8 +61,11 @@ size_t		print_zone(t_block *zone, int num_blocks)
 	{
 		if (zone[i].free == FALSE)
 		{
-			ft_printf("%p - %p : %d bytes\n",
-			zone[i].location, (zone[i].location + zone[i].size), zone[i].size);
+			print_address(zone[i].location);
+			ft_putstr(" - ");
+			print_address((zone[i].location + zone[i].size));
+			ft_putnbr(zone[i].size);
+			ft_putstr(" bytes\n");
 			bytes += zone[i].size;
 		}
 	}
@@ -55,8 +81,11 @@ size_t		print_large_zone(void)
 	bytes = 0;
 	while (tmp)
 	{
-		ft_printf("%p - %p : %d bytes\n",
-		tmp->location, (tmp->location + tmp->size), tmp->size);
+		print_address(tmp->location);
+		ft_putstr(" - ");
+		print_address((tmp->location + tmp->size));
+		ft_putnbr(tmp->size);
+		ft_putstr(" bytes\n");
 		bytes += tmp->size;
 		tmp = tmp->next;
 	}
@@ -70,12 +99,17 @@ void		show_alloc_mem(void)
 	if (g_zones.init == 0)
 		init();
 	total_bytes = 0;
-	ft_printf("TINY : %p\n", g_zones.tiny_space);
+	ft_putstr("TINY : ");
+	print_address(g_zones.tiny_space);
+	ft_putchar('\n');
 	total_bytes += print_zone(g_zones.tiny, TINY_BLOCKS);
-	ft_printf("SMALL : %p\n", g_zones.small_space);
+	ft_putstr("SMALL : ");
+	print_address(g_zones.small_space);
+	ft_putchar('\n');
 	total_bytes += print_zone(g_zones.small, SMALL_BLOCKS);
-	ft_printf("LARGE : %p\n",
-		(g_zones.small_space + (SMALL_BLOCKS * SMALL_SIZE)));
+	ft_putstr("LARGE : ");
+	print_address((g_zones.small_space + (SMALL_BLOCKS * SMALL_SIZE)));
+	ft_putchar('\n');
 	total_bytes += print_large_zone();
-	ft_printf("Total : %lu bytes", total_bytes);
+	ft_printf("Total : %lu bytes\n", total_bytes);
 }

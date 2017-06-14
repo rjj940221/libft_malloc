@@ -6,7 +6,7 @@
 /*   By: rojones <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/13 14:08:49 by rojones           #+#    #+#             */
-/*   Updated: 2017/06/14 07:15:27 by rojones          ###   ########.fr       */
+/*   Updated: 2017/06/14 11:37:11 by rojones          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,15 @@ void	free_error(void *ptr)
 	id = getpgrp();
 	thread = pthread_self();
 	pthread_getname_np(thread, name, 15);
-	ft_printf("%s(%i,%p) libft_malloc: *** error for object %p: \
-pointer being freed was not allocated\n", name, id,
-			thread, ptr);
-	munmap(g_zones.tiny_space, (size_t)(TINY_BLOCKS * TINY_SIZE));
-	munmap(g_zones.small_space, (size_t)(SMALL_BLOCKS * SMALL_SIZE));
+	ft_putstr(name);
+	ft_putchar('(');
+	ft_putnbr(id);
+	ft_putchar(',');
+	print_address(thread);
+	ft_putstr(") libft_malloc: *** error for object ");
+	print_address(ptr);
+	ft_putstr(": pointer being freed was not allocated\n");
+	destructer();
 	pthread_kill(thread, 6);
 }
 
@@ -82,6 +86,8 @@ void	free_large(void *ptr)
 
 void	free(void *ptr)
 {
+	if (g_zones.init == 0)
+		return (free_error(ptr));
 	if (ptr == NULL)
 		return ;
 	if (ptr >= g_zones.tiny_space && ptr <= g_zones.tiny_space +
