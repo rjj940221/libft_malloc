@@ -6,12 +6,12 @@
 /*   By: rojones <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/13 14:31:13 by rojones           #+#    #+#             */
-/*   Updated: 2017/06/13 14:32:55 by rojones          ###   ########.fr       */
+/*   Updated: 2017/06/14 07:22:14 by rojones          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef UNTITLED_LIBRARY_H
-# define UNTITLED_LIBRARY_H
+#ifndef LIBFT_MALLOC_H
+# define LIBFT_MALLOC_H
 # define TINY_SIZE getpagesize()
 # define TINY_BLOCKS 100
 # define SMALL_SIZE 4 * getpagesize()
@@ -32,10 +32,10 @@ typedef struct	s_block{
 
 typedef struct	s_zone_link
 {
-	size_t	size;
-	void	*location;
-	struct	s_zone_link *next;
-	struct	s_zone_link *previous;
+	size_t				size;
+	void				*location;
+	struct s_zone_link	*next;
+	struct s_zone_link	*previous;
 }				t_zone_link;
 
 typedef struct	s_zones{
@@ -49,16 +49,16 @@ typedef struct	s_zones{
 
 extern t_zones	g_zones;
 
-void		free(void *ptr);
+void			free(void *ptr);
 
-void		*malloc(size_t size);
+void			*malloc(size_t size);
 
-void		*realloc(void *ptr, size_t size);
+void			*realloc(void *ptr, size_t size);
 
-void		show_alloc_mem();
+void			show_alloc_mem();
 
-t_zone_link	*find_zone(void *adr);
+t_zone_link		*find_zone(void *adr);
 
-void 		init();
+void			init();
 
 #endif

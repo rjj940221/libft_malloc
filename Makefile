@@ -2,11 +2,11 @@ ifeq ($(HOSTTYPE),)
 	HOSTTYPE = $(shell uname -m)_$(shell uname -s)
 endif
 
-NAME		=	libft_malloc_$(HOSTTYPE.so)
+NAME		=	libft_malloc_$(HOSTTYPE).so
 INC			=	-I ./libft
-LIBS		=	-lft -lpthread -L libft -lft
-CFLAGS		=	-Wall -Wextra -Werror -share $(INC)
-LFLAGS		=	-l  $(INC) $(LIBS)
+LIBS		=	-L libft -lft
+CFLAGS		=	-Wall -Wextra -Werror -fPIC $(INC)
+LFLAGS		=	-lpthread -fPIC -shared  $(INC) $(LIBS)
 CC			=	gcc
 LD			=	gcc
 
@@ -19,19 +19,19 @@ OBJ			=	./build/libft_free.o ./build/libft_malloc.o \
 all: $(NAME)
 
 ./build/libft_free.o : libft_free.c
-	@mkdir -p $(dir build)
+	@mkdir -p  build
 	$(CC) $(CFLAGS) -c libft_free.c -o ./build/libft_free.o
 
 ./build/libft_malloc.o : libft_malloc.c
-	@mkdir -p $(dir build)
+	@mkdir -p build
 	$(CC) $(CFLAGS) -c libft_malloc.c -o ./build/libft_malloc.o
 
 ./build/libft_malloc_suport.o : libft_malloc_suport.c
-	@mkdir -p $(dir build)
+	@mkdir -p build
 	$(CC) $(CFLAGS) -c libft_malloc_suport.c -o ./build/libft_malloc_suport.o
 
 ./build/libft_realloc.o : libft_realloc.c
-	@mkdir -p $(dir build)
+	@mkdir -p build
 	$(CC) $(CFLAGS) -c libft_realloc.c -o ./build/libft_realloc.o
 
 $(NAME): $(OBJ)

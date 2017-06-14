@@ -6,15 +6,15 @@
 /*   By: rojones <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/13 13:54:44 by rojones           #+#    #+#             */
-/*   Updated: 2017/06/13 14:30:36 by rojones          ###   ########.fr       */
+/*   Updated: 2017/06/14 07:19:04 by rojones          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft_malloc.h"
 
-t_zones g_zones;
+t_zones	g_zones;
 
-void	init()
+void	init(void)
 {
 	int	i;
 
@@ -23,7 +23,8 @@ void	init()
 	while (++i < TINY_BLOCKS)
 		g_zones.tiny[i] = (t_block){0, TRUE,
 		g_zones.tiny_space + (TINY_SIZE * i)};
-	g_zones.small_space = mmap(0, (size_t)SMALL_SIZE, PROT_RW,MAP_FLAGS, -1, 0);
+	g_zones.small_space = mmap(0, (size_t)SMALL_SIZE,
+			PROT_RW, MAP_FLAGS, -1, 0);
 	i = -1;
 	while (++i < SMALL_BLOCKS)
 		g_zones.small[i] = (t_block){0, TRUE,
@@ -37,15 +38,15 @@ void	*allocate_large(size_t size)
 	t_zone_link	*zone;
 
 	re = mmap(0, size, PROT_RW, MAP_FLAGS, -1, 0);
-	zone = (t_zone_link *) mmap(0, sizeof(t_zone_link),
+	zone = (t_zone_link *)mmap(0, sizeof(t_zone_link),
 		PROT_RW, MAP_FLAGS, -1, 0);
-	if (re != MAP_FAILED && zone != MAP_FAILED) 
+	if (re != MAP_FAILED && zone != MAP_FAILED)
 	{
 		zone->location = re;
 		zone->size = size;
 		zone->previous = NULL;
 		zone->next = NULL;
-		if (g_zones.large) 
+		if (g_zones.large)
 		{
 			zone->next = g_zones.large;
 			g_zones.large->previous = zone;
@@ -63,7 +64,7 @@ void	*allocate_small(size_t size)
 	i = 0;
 	if (g_zones.small_space == MAP_FAILED)
 		return (allocate_large(size));
-	while (i < SMALL_BLOCKS) 
+	while (i < SMALL_BLOCKS)
 	{
 		if (g_zones.small[i].free == TRUE)
 		{
@@ -83,9 +84,9 @@ void	*allocate_tiny(size_t size)
 	i = 0;
 	if (g_zones.tiny_space == MAP_FAILED)
 		return (allocate_large(size));
-	while (i < TINY_BLOCKS) 
+	while (i < TINY_BLOCKS)
 	{
-		if (g_zones.tiny[i].free == TRUE) 
+		if (g_zones.tiny[i].free == TRUE)
 		{
 			g_zones.tiny[i].free = FALSE;
 			g_zones.tiny[i].size = size;
@@ -93,10 +94,10 @@ void	*allocate_tiny(size_t size)
 		}
 		i++;
 	}
-	return allocate_small(size);
+	return (allocate_small(size));
 }
 
-void *malloc(size_t size)
+void	*malloc(size_t size)
 {
 	if (g_zones.init == 0)
 		init();
